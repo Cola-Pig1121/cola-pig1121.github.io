@@ -5,7 +5,7 @@
         width: auto;
         height: auto;
         background: rgba(0,0,0,0.1);
-        margin: 250px auto 0;
+        margin: 10px auto 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -22,6 +22,8 @@
   </video>
 </div>
 
+<p></p>
+
 ## [How to cheer up Furina](./How to cheer up Furina.mp4)
 
 <div class="box">
@@ -30,6 +32,8 @@
   </video>
 </div>
 
+<p></p>
+
 ## [Yunli & Yanqing](./Yunli and Yanqing.mp4)
 
 <div class="box">
@@ -37,3 +41,5 @@
     <source src="./Yunli and Yanqing.mp4" type="video/mp4"> 
   </video>
 </div>
+
+<p></p>
