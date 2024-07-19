@@ -8,7 +8,8 @@
         margin: 250px auto 0;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: center;
+        align-items: center;
         overflow: hidden;
       }
 </style>
