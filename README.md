@@ -16,24 +16,24 @@
 
 ## [What's it like to be a sweet couple](./What's it like to be a sweet couple.mp4)
 
-<video width="auto" height="auto" controls margin="auto">
-  <div class="box">
+<div class="box">
+  <video width="auto" height="auto" controls margin="auto">
     <source src="./What's it like to be a sweet couple.mp4" type="video/mp4"> 
-  </div>
-</video>
+  </video>
+</div>
 
 ## [How to cheer up Furina](./How to cheer up Furina.mp4)
 
-<video width="auto" height="auto" controls margin="auto">
-  <div class="box">
+<div class="box">
+  <video width="auto" height="auto" controls margin="auto">
     <source src="./How to cheer up Furina.mp4" type="video/mp4"> 
-  </div>
-</video>
+  </video>
+</div>
 
 ## [Yunli & Yanqing](./Yunli and Yanqing.mp4)
 
-<video width="auto" height="auto" controls margin="auto">
-  <div class="box">
+<div class="box">
+  <video width="auto" height="auto" controls margin="auto">
     <source src="./Yunli and Yanqing.mp4" type="video/mp4"> 
-  </div>
-</video>
+  </video>
+</div>
