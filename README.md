@@ -5,7 +5,7 @@
 <style>
   .box{
         width: auto;
-        height: 250px;
+        height: auto;
         background: rgba(0,0,0,0.1);
         margin: 150px auto 0;
         display: flex;
@@ -13,21 +13,14 @@
         justify-content: space-around;
         overflow: hidden;
       }
-  .box video{
-        margin: auto;
-  }
 </style>
 
-<div class="box">
-  <video width="auto" height="auto" controls> 
-    <source src="./What's it like to be a sweet couple.mp4" type="video/mp4"> 
-  </video>
-</div>
+<video width="auto" height="auto" controls class="box"> 
+  <source src="./What's it like to be a sweet couple.mp4" type="video/mp4"> 
+</video>
 
 ## [How to cheer up Furina](./How to cheer up Furina.mp4)
 
-<div class="box">
-  <video width="auto" height="auto" controls> 
-    <source src="./How to cheer up Furina.mp4" type="video/mp4"> 
-  </video> 
-</div>
+<video width="auto" height="auto" controls class="box">
+  <source src="./How to cheer up Furina.mp4" type="video/mp4"> 
+</video>
