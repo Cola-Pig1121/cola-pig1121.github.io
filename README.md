@@ -1,6 +1,6 @@
 # cola-pig1121.github.io【信奥图床】
 
-## [Furina](./What's it like to be a sweet couple.mp4)
+## [What's it like to be a sweet couple](./What's it like to be a sweet couple.mp4)
 
 <style>
   .box{
@@ -23,4 +23,11 @@
 
 <video width="auto" height="auto" controls class="box">
   <source src="./How to cheer up Furina.mp4" type="video/mp4"> 
+</video>
+
+
+## [Yunli & Yanqing](./Yunli and Yanqing.mp4)
+
+<video width="auto" height="auto" controls class="box">
+  <source src="./Yunli and Yanqing.mp4" type="video/mp4"> 
 </video>
