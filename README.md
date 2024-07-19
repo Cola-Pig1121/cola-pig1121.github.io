@@ -1,7 +1,5 @@
 # cola-pig1121.github.io【信奥图床】
 
-## [What's it like to be a sweet couple](./What's it like to be a sweet couple.mp4)
-
 <style>
   .box{
         width: auto;
@@ -14,6 +12,8 @@
         overflow: hidden;
       }
 </style>
+
+## [What's it like to be a sweet couple](./What's it like to be a sweet couple.mp4)
 
 <video width="auto" height="auto" controls class="box"> 
   <source src="./What's it like to be a sweet couple.mp4" type="video/mp4"> 
