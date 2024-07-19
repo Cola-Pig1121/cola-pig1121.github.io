@@ -2,13 +2,12 @@
 
 ## [Furina](./What's it like to be a sweet couple.mp4)
 
-<title>信奥图床</title>
 <style>
   .box{
-        width: 600px;
-        height: 240px;
+        width: auto;
+        height: auto;
         background: rgba(0,0,0,0.1);
-        margin: 100px auto 0;
+        margin: 250px auto 0;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
