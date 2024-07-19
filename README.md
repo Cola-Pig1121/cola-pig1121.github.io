@@ -7,7 +7,7 @@
         width: auto;
         height: auto;
         background: rgba(0,0,0,0.1);
-        margin: 250px auto 0;
+        margin: 150px auto 0;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -16,7 +16,7 @@
 </style>
 
 <div class="box">
-  <video width="auto" height="auto" controls margin="auto"> 
+  <video width="auto" height="auto" controls> 
     <source src="./What's it like to be a sweet couple.mp4" type="video/mp4"> 
   </video>
 </div>
@@ -24,7 +24,7 @@
 ## [How to cheer up Furina](./How to cheer up Furina.mp4)
 
 <div class="box">
-  <video width="auto" height="auto" controls margin="auto"> 
+  <video width="auto" height="auto" controls> 
     <source src="./How to cheer up Furina.mp4" type="video/mp4"> 
   </video> 
 </div>
