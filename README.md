@@ -13,6 +13,9 @@
         justify-content: space-around;
         overflow: hidden;
       }
+  .box video{
+        margin: auto;
+  }
 </style>
 
 <div class="box">
