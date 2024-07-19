@@ -2,6 +2,11 @@
 
 ## [Furina](./What's it like to be a sweet couple.mp4)
 
+<html>
+  <head>
+      <title>信奥图床</title>
+      <style></style>
+  </head>
 <div class="box">
   <video width="auto" height="auto" controls margin="auto"> 
     <source src="./What's it like to be a sweet couple.mp4" type="video/mp4"> 
