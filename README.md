@@ -5,7 +5,7 @@
 <style>
   .box{
         width: auto;
-        height: auto;
+        height: 250px;
         background: rgba(0,0,0,0.1);
         margin: 150px auto 0;
         display: flex;
