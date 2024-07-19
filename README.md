@@ -4,7 +4,7 @@
   .box{
         width: auto;
         height: auto;
-        background: rgba(0,0,0,0.1);
+        background: rgba(0,0,0,0.95);
         margin: 10px auto 0;
         display: flex;
         flex-direction: column;
