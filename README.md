@@ -49,7 +49,12 @@
 </script>
 
 <style>
+  @font-face {
+        font-family: "kalmansk";
+        src: url(“./kalmansk.otf”) format(“truetype”);
+  }
   body{
+        font-family: "kalmansk", sans-serif;
         background-color: #3ccbed82;
   }
   h1{
