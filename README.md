@@ -62,3 +62,7 @@
         overflow: hidden;
       }
 </style>
+
+<footer>
+  <p text-align="left">Made by <a href="bugs8.v6.army">Cola Pig</a> & 落叶听枫TC</p>
+</footer>
