@@ -17,7 +17,7 @@
 
 ## [How to cheer up Furina](./How to cheer up Furina.mp4)
 
-<p></p>
+<br>
 
 <div class="box">
   <video width="auto" height="auto" controls margin="auto">
