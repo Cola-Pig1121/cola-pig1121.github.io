@@ -33,7 +33,7 @@
 
 
 <script src="https://utteranc.es/client.js"
-        repo="Cola-Pig1121/comment"
+        repo="Cola-Pig1121/cola-pig1121.github.io"
         issue-term="title"
         theme="icy-dark"
         crossorigin="anonymous"
