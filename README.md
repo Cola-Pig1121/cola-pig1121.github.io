@@ -1,7 +1,6 @@
 # cola-pig1121.github.io【信奥图床】
 
-<input type="file" class="file" name="file" />
-<img src="" alt="" />
+<input type="file" class="file" name="file" multiple="multiple" />
 
 <style>
   a{
