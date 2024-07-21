@@ -60,6 +60,7 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        box-shadow: 7.1px 7.1px 7.1px rgba(0, 0, 0, 0.13), 57px 57px 57px rgba(0, 0, 0, 0.26);
       }
 </style>
 
