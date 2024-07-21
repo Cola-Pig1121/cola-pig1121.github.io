@@ -1,5 +1,8 @@
 # cola-pig1121.github.io【信奥图床】
 
+<input type="file" class="file" name="file" />
+<img src="" alt="" />
+
 <style>
   a{
         color: #1b1f23;
