@@ -58,9 +58,11 @@
         background-color: #3ccbed82;
   }
   h1{
+        font-family: "kalmansk", sans-serif;
         color: #1b1f23;
   }
   a{
+        font-family: "kalmansk", sans-serif;
         color: #1b1f23;
   }
   .box{
@@ -81,5 +83,5 @@
 <br>
 
 <footer>
-  <p text-align="left">Made by <a href="bugs8.v6.army">Cola Pig</a> & 落叶听枫TC</p>
+  <p font-family="'kalmansk', sans-serif" text-align="left">Made by <a href="bugs8.v6.army">Cola Pig</a> & 落叶听枫TC</p>
 </footer>
