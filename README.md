@@ -2,6 +2,12 @@
 # cola-pig1121.github.io【信奥图床】
 
 <style>
+  body{
+        background: #3ccbed82;
+  }
+  h1{
+        color: #1b1f23;
+  }
   a{
         color: #1b1f23;
   }
