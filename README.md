@@ -50,7 +50,7 @@
 
 
 <script src="https://utteranc.es/client.js"
-        repo="cola-pig1121/comment"
+        repo="Cola-Pig1121/comment"
         issue-term="title"
         theme="icy-dark"
         crossorigin="anonymous"
