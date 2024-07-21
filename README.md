@@ -2,7 +2,8 @@
 
 <style>
   .a{
-      display: none;
+        display: none;
+        color: #1b1f23;
   }
   .box{
         width: auto;
