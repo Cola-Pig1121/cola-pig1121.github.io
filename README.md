@@ -1,29 +1,6 @@
 
 # cola-pig1121.github.io【信奥图床】
 
-<style>
-  body{
-        background-color: #3ccbed82;
-  }
-  h1{
-        color: #1b1f23;
-  }
-  a{
-        color: #1b1f23;
-  }
-  .box{
-        width: auto;
-        height: auto;
-        background: rgba(0,0,0,0.95);
-        margin: 10px auto 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-      }
-</style>
-
 ## [What's it like to be a sweet couple](./What's it like to be a sweet couple.mp4)
 
 <div class="box">
@@ -62,3 +39,26 @@
         crossorigin="anonymous"
         async>
 </script>
+
+<style>
+  body{
+        background-color: #3ccbed82;
+  }
+  h1{
+        color: #1b1f23;
+  }
+  a{
+        color: #1b1f23;
+  }
+  .box{
+        width: auto;
+        height: auto;
+        background: rgba(0,0,0,0.95);
+        margin: 10px auto 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+</style>
