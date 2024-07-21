@@ -2,7 +2,6 @@
 
 <style>
   a{
-        display: none;
         color: #1b1f23;
   }
   .box{
