@@ -3,7 +3,7 @@
 
 <style>
   body{
-        background: #3ccbed82;
+        background-color: #3ccbed82;
   }
   h1{
         color: #1b1f23;
