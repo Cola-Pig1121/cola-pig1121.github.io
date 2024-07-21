@@ -1,4 +1,23 @@
+<title>信奥图床</title>
+
 # cola-pig1121.github.io【信奥图床】
+
+<script type="text/javascript">
+          document.querySelector('.file').addEventListener('change', function(e) {
+          let files = e.target.files
+          if (!files.length) return
+          // 上传文件 创建FormData
+          let formData = new FormData()
+          // 遍历FileList对象，拿到多个图片对象
+          for (let i = 0; i < files.length; i++) {
+          // formData中的append方法 如果已有相同的键，则会追加成为一个数组  注意:这里需要使用formData.getAll()获取
+            formData.append('upFile', files[i], files[i].name)
+          }
+          console.log(formData.getAll('upFile'))
+          //
+          // axios.post('url', formData)
+        })
+</script>
 
 <input type="file" class="file" name="file" multiple="multiple" />
 
