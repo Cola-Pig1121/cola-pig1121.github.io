@@ -1,4 +1,4 @@
-<title>信奥图床</title>
+<html><head><title>信奥图床</title></head></html>
 
 # cola-pig1121.github.io【信奥图床】
 
