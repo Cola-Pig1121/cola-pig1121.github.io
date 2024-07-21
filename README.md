@@ -1,7 +1,7 @@
 # cola-pig1121.github.io【信奥图床】
 
 <style>
-  .a{
+  a{
         display: none;
         color: #1b1f23;
   }
