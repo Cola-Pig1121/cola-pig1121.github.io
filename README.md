@@ -1,6 +1,9 @@
 # cola-pig1121.github.io【信奥图床】
 
 <style>
+  .a{
+      display: none;
+  }
   .box{
         width: auto;
         height: auto;
