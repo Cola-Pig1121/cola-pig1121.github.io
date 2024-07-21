@@ -1,11 +1,11 @@
 
 # cola-pig1121.github.io【信奥图床】
 
-<p></p>
+<br>
 
 ## [What's it like to be a sweet couple](./What's it like to be a sweet couple.mp4)
 
-<p></p>
+<br>
 
 <div class="box">
   <video width="auto" height="auto" controls margin="auto">
@@ -13,7 +13,7 @@
   </video>
 </div>
 
-<p></p>
+<br>
 
 ## [How to cheer up Furina](./How to cheer up Furina.mp4)
 
@@ -25,11 +25,11 @@
   </video>
 </div>
 
-<p></p>
+<br>
 
 ## [Yunli & Yanqing](./Yunli and Yanqing.mp4)
 
-<p></p>
+<br>
 
 <div class="box">
   <video width="auto" height="auto" controls margin="auto">
@@ -37,7 +37,7 @@
   </video>
 </div>
 
-<p></p>
+<br>
 
 
 <script src="https://utteranc.es/client.js"
@@ -72,7 +72,7 @@
       }
 </style>
 
-<p></p>
+<br>
 
 <footer>
   <p text-align="left">Made by <a href="bugs8.v6.army">Cola Pig</a> & 落叶听枫TC</p>
