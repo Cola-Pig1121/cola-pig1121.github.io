@@ -1,6 +1,6 @@
 
 <div>
-    <img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.png" width="100px" height="100px" vertical-align="top";>
+    <img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.png" width="100px" height="100px" vertical-align="top">
     <span class="bt">cola-pig1121.github.io【信奥图床】</span>
 </div>
 
