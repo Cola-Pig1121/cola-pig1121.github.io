@@ -3,7 +3,7 @@
 
 <br>
 
-<h1 color="red" text-align="center">请大声喊出我们的口号：<br>没有bug的代码不是好代码<br>能KO一个bug的只有更多的bug!!!</h1>
+<h1 color="red" text-align="center" class="kh">请大声喊出我们的口号：<br>没有bug的代码不是好代码<br>能KO一个bug的只有更多的bug!!!</h1>
 
 <br>
 
@@ -54,9 +54,9 @@
 
 <style>
   video{
-      width="75%";
-      height="75%";
-      margin="auto";
+        width: 75%;
+        height: 75%;
+        margin: auto;
   }
   @font-face {
         font-family: "kalmansk";
@@ -86,7 +86,10 @@
         border-radius: 15px;
         background: linear-gradient(145deg, #171717, #1c1c1c);
         box-shadow:  20px 20px 60px #161616, -20px -20px 60px #1e1e1e;
-      }
+    }
+  .kh{
+        font-family: "kalmansk", sans-serif;
+  }
 </style>
 
 <br>
