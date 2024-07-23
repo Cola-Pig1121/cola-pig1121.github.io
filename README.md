@@ -3,12 +3,16 @@
 
 <br>
 
+<h1 color="red" text-align="center">请大声喊出我们的口号：<br>没有bug的代码不是好代码<br>能KO一个bug的只有更多的bug!!!</h1>
+
+<br>
+
 ## [What's it like to be a sweet couple](./What's it like to be a sweet couple.mp4)
 
 <br>
 
 <div class="box">
-  <video width="auto" height="auto" controls margin="auto">
+  <video controls>
     <source src="./What's it like to be a sweet couple.mp4" type="video/mp4"> 
   </video>
 </div>
@@ -20,7 +24,7 @@
 <br>
 
 <div class="box">
-  <video width="auto" height="auto" controls margin="auto">
+  <video controls>
     <source src="./How to cheer up Furina.mp4" type="video/mp4"> 
   </video>
 </div>
@@ -32,7 +36,7 @@
 <br>
 
 <div class="box">
-  <video width="auto" height="auto" controls margin="auto">
+  <video controls>
     <source src="./Yunli and Yanqing.mp4" type="video/mp4"> 
   </video>
 </div>
@@ -49,6 +53,11 @@
 </script>
 
 <style>
+  video{
+      width="75%";
+      height="75%";
+      margin="auto";
+  }
   @font-face {
         font-family: "kalmansk";
         src: url(“./kalmansk.otf”) format(“truetype”);
