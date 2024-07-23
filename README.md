@@ -1,4 +1,6 @@
 
+<img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.ico">
+
 # cola-pig1121.github.io【信奥图床】
 
 <br>
@@ -100,3 +102,5 @@
 <footer>
   <p text-align="left">Made by <a href="bugs8.v6.army">Cola Pig</a> & 落叶听枫TC</p>
 </footer>
+
+<link rel="ico" href="./favicon.ico">
