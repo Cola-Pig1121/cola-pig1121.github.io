@@ -90,7 +90,7 @@
   .kh{
         color: red;
         text-align: center;
-        font-size: 3em;
+        font-size: 2.5em;
         font-family: "kalmansk", sans-serif;
   }
 </style>
