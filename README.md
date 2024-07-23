@@ -1,5 +1,6 @@
 
-<img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.png" width="80px" height="80px"> <p class="bt">cola-pig1121.github.io【信奥图床】</p>
+<img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.png" width="80px" height="80px">
+<p class="bt">cola-pig1121.github.io【信奥图床】</p>
 
 <br>
 
