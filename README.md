@@ -1,5 +1,5 @@
 
-<img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.png" width="80px" height="80px"> <h1>cola-pig1121.github.io【信奥图床】</h1>
+<img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.png" width="80px" height="80px"> <p class="bt">cola-pig1121.github.io【信奥图床】</p>
 
 <br>
 
@@ -87,6 +87,11 @@
         background: linear-gradient(145deg, #171717, #1c1c1c);
         box-shadow:  20px 20px 60px #161616, -20px -20px 60px #1e1e1e;
     }
+  .bt{
+        text-align: right;
+        font-size: 3em;
+        font-family: "kalmansk", sans-serif;
+  }
   .kh{
         color: red;
         text-align: center;
