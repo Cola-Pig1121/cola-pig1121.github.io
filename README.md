@@ -109,9 +109,8 @@
     <p text-align="left">Made by <a href="bugs8.v6.army">Cola Pig</a> & 落叶听枫TC</p>
 </footer>
 
-<!DOCTYPE HTML>
 <html>
     <head>
-        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="./favicon.ico" >
     </head>
 </html>
