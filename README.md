@@ -1,7 +1,7 @@
 
 <div>
     <img alg="信奥人的图床 —— 信奥图床！！！" src="./favicon.png" width="100px" height="100px">
-    <p class="bt">cola-pig1121.github.io【信奥图床】</p>
+    <span class="bt">cola-pig1121.github.io【信奥图床】</span>
 </div>
 
 <br>
@@ -91,7 +91,7 @@
         box-shadow:  20px 20px 60px #161616, -20px -20px 60px #1e1e1e;
     }
   .bt{
-        text-align: right;
+        margin: auto;
         font-size: 3em;
         font-family: "kalmansk", sans-serif;
   }
