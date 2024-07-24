@@ -37,7 +37,6 @@ const fileDisplay = (url, cb) => {
 fileDisplay('./image', (arr) => {
 	for(let i = 0; i< arr.length; i++)
 			console.log(arr[i]);
-			document.write('<a href="', arr[i], '">', arr[i], '</a>');
 })
 // commonjs规范
 module.exports = fileDisplay;
