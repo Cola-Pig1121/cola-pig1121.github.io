@@ -53,7 +53,7 @@ const injectToHtml = (ar) => {
 	data.splice(
 		data.findIndex((c) => c.trim() === "<footer>"),
 		null,
-		` <a href=".`,ar,`"><img src=".`,ar,`" width="150px" height="150px" object-fit="cover" > </a> `
+		` <a href=".`,ar,`"><img src=".`,ar,`" width="150px" height="150px" object-fit="cover" object-position="top" > </a> `
 	);
 	fs.writeFileSync(html, data.join(EOL));
 };
