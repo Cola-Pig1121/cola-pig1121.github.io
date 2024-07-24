@@ -1,5 +1,5 @@
 // node fs模块
-const fs = require('./fs.js');
+const fs = require('fs');
 // node path模块
 const path = require('path');
 // 收集所有的文件路径
