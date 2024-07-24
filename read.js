@@ -22,7 +22,7 @@ const fileDisplay = (url, cb) => {
 				const isDir = stats.isDirectory();
 				if (isFile) {
 					// 这块我自己处理了多余的绝对路径，第一个 replace 是替换掉那个路径，第二个是所有满足\\的直接替换掉
-					arr.push(filedir.replace(__dirname, '').replace(/\\/image, ''))
+					arr.push(filedir.replace(__dirname, '').replace(/\\/img, ''))
 					// 最后打印的就是完整的文件路径了
 					if (timer) clearTimeout(timer)
 					timer = setTimeout(() => cb && cb(arr), 200)
@@ -53,7 +53,7 @@ const injectToHtml = (ar) => {
 	data.splice(
 		data.findIndex((c) => c.trim() === "<footer>"),
 		null,
-		`  <a href="./image/`,ar,`">`,ar,`</a> <br>`
+		` <br> <h2><a href=".`,ar,`">`,ar,`</a></h2> <br> <div class="box"> <img src=".`,ar,`" width="75%" height="75%" margin="auto" > </div> `
 	);
 	fs.writeFileSync(html, data.join(EOL));
 };
