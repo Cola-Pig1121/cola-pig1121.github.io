@@ -1,5 +1,5 @@
 // node fs模块
-const fs = require('fs');
+const fs = require('./fs.js');
 // node path模块
 const path = require('path');
 // 收集所有的文件路径
@@ -33,10 +33,42 @@ const fileDisplay = (url, cb) => {
 		});
 	});
 }
+
+// 在index.html中插入icas组件相关文件
+const injectToHtml = (ar) => {
+	const { EOL } = require("os");
+	const html = "./index.html";
+	const source = fs.readFileSync(html, "utf8");
+	// if (source.indexOf("web-icas") > -1) return;  若已注入则跳过
+	const data = source.split(/\r?\n/gm);
+	// head末尾插入资源
+	/*data.splice(
+	  data.findIndex((c) => c.trim() === "</head>"),
+	  null,
+	  `  <link rel="stylesheet" href="./icas/web-icas.css" />
+	<script src="https://unpkg.com/vue"></script>
+	<script src="./icas/web-icas.min.js" async></script>`
+	);*/
+	// body末尾插入组件
+	data.splice(
+		data.findIndex((c) => c.trim() === "<footer>"),
+		null,
+		`  <a href=".',ar,'"></a>`
+	);
+	fs.writeFileSync(html, data.join(EOL));
+};
+
+
+
 // 测试代码
 fileDisplay('./image', (arr) => {
-	for(let i = 0; i< arr.length; i++)
-			console.log(arr[i]);
+	for (let i = 0; i < arr.length; i++){
+		console.log(arr[i]);
+		injectToHtml(arr[i]);
+	}
+		
 })
+
 // commonjs规范
 module.exports = fileDisplay;
+module.exports = injectToHtml;
