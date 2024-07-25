@@ -51,7 +51,7 @@ const injectToHtml = (ar) => {
 	);*/
 	// body末尾插入组件
 	data.splice(
-		data.findIndex((c) => c.trim() === "<span>"),
+		data.findIndex((c) => c.trim() === "<span></span>"),
 		null,
 		` <a href=".`,ar,`"><img src=".`,ar,`" style="width: 150px; height: 150px; object-fit: cover; object-position: top;" > </a> `
 	);
