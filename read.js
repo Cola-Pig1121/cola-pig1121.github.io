@@ -37,7 +37,7 @@ const fileDisplay = (url, cb) => {
 // 在index.html中插入icas组件相关文件
 const injectToHtml = (ar) => {
 	const { EOL } = require("os");
-	const html = "./index.html";
+	const html = "./img.html";
 	const source = fs.readFileSync(html, "utf8");
 	// if (source.indexOf("web-icas") > -1) return;  若已注入则跳过
 	const data = source.split(/\r?\n/gm);
@@ -51,7 +51,7 @@ const injectToHtml = (ar) => {
 	);*/
 	// body末尾插入组件
 	data.splice(
-		data.findIndex((c) => c.trim() === "<footer>"),
+		data.findIndex((c) => c.trim() === "<p>"),
 		null,
 		` <a href=".`,ar,`"><img src=".`,ar,`" style="width: 150px; height: 150px; object-fit: cover; object-position: top;" > </a> `
 	);
