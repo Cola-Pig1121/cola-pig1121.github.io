@@ -63,7 +63,6 @@ const injectToHtml = (ar) => {
 // 测试代码
 fileDisplay('./image', (arr) => {
 	for (let i = 0; i < arr.length; i++){
-		console.log(arr[i]);
 		injectToHtml(arr[i]);
 	}
 		
