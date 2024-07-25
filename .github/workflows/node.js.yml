@@ -32,5 +32,8 @@ jobs:
     - name: install fs
       run: npm install fs
 
+    - name: checkcss
+      run: npm i -D @fullhuman/postcss-purgecss
+    
     - name: runfile
       run: node read.js 
