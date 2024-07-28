@@ -51,7 +51,7 @@ const injectToHtml = (ar) => {
 	  `  <link rel="preload" href=".`,ar,`" as="image"> `
 	);
 	Predata.splice(
-	  data.findIndex((c) => c.trim() === "</head>"),
+	  Predata.findIndex((c) => c.trim() === "</head>"),
 	  null,
 	  `  <link rel="preload" href=".`,ar,`" as="image"> `
 	);
