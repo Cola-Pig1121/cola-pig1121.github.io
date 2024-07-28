@@ -38,20 +38,12 @@ const fileDisplay = (url, cb) => {
 const injectToHtml = (ar) => {
 	const { EOL } = require("os");
 	const html = "./img.html";
-	const pre = "./index.html";
 	const source = fs.readFileSync(html, "utf8");
-	const Presource = fs.readFileSync(pre, "utf8");
 	// if (source.indexOf("web-icas") > -1) return;  若已注入则跳过
 	const data = source.split(/\r?\n/gm);
-	const Predata = Presource.split(/\r?\n/gm);
 	// head末尾插入资源
 	data.splice(
 	  data.findIndex((c) => c.trim() === "</head>"),
-	  null,
-	  `  <link rel="preload" href=".`,ar,`" as="image"> `
-	);
-	Predata.splice(
-	  Predata.findIndex((c) => c.trim() === "</head>"),
 	  null,
 	  `  <link rel="preload" href=".`,ar,`" as="image"> `
 	);
@@ -62,7 +54,6 @@ const injectToHtml = (ar) => {
 		` <a href=".`,ar,`"><img src=".`,ar,`" style="width: 150px; height: 150px; object-fit: cover; object-position: top;" > </a> `
 	);
 	fs.writeFileSync(html, data.join(EOL));
-	fs.writeFileSync(pre, Predata.join(EOL));
 };
 
 
