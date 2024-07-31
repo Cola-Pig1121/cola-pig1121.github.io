@@ -17,20 +17,6 @@
 		</script>
 		<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 		<style>
-			progress {
-    				-webkit-appearance: none;
-    				width: 0.6rem;
-   			 	height: 0.16rem;
-			}
-
-			progress::-webkit-progress-bar{
-    				background-color: #e7f1fb;
-			}
-
-			progress::-webkit-progress-value{
-    				background-color: #f57c6b;
-			}
-			
 			@media screen and (max-width: 960px) {
 				body {
 					margin-top: 5%;
@@ -67,34 +53,6 @@
 				font-weight: bold;
 			}
 		</style>
-		<script type="text/javascript">
-			console.log("1");
-			document.addEventListener('DOMContentLoaded', function() {
-				var img = document.getElementById('preloadedImage');
-				var progress = document.getElementById('imageProgress');
-
-				// 如果需要实时更新进度，可以使用以下方式
-				// 但请注意，这需要服务器支持并返回正确的Content-Length头信息
-				var xhr = new XMLHttpRequest();
-				xhr.open('GET', img.src, true);
-				xhr.responseType = 'blob';
-				xhr.onprogress = function(e) {
-					if (e.lengthComputable) {
-						var percentComplete = (e.loaded / e.total) * 100;
-						progress.value = Math.floor(percentComplete);
-						console.log("2");
-					}
-				};
-				xhr.onload = function() {
-					if (this.status === 200) {
-						// 可以在这里更新图片的src属性，以显示加载的图片
-						img.src = URL.createObjectURL(this.response);
-						console.log("3");
-					}
-				};
-				xhr.send();
-			});
-		</script>
 	</head>
 	<body>
 
@@ -116,6 +74,28 @@
 		<br>
 
 		<div class="oipm-img">
+			<script type="text/javascript">
+				var imgs = document.getElementsByTagName('img');
+				let num = imgs.length;
+				loading = 0;
+				for (let i = 0; i < num; i++) {
+					let imgs = new Image(); //这是重点，必须new一张，如果直接用onload，在你还没执行到这段函数的时候，可能已经加载了一两个图片了，这时候就会出现加载不到100%！！！
+					imgs.src = allImgs[i].src;
+					imgs.onload = function() {
+						add()
+					}; //必须用匿名函数，否则加载的函数不是load函数
+				}
+
+				function add() {
+					console.dir(loading / num * 100 + '%');
+					if (loading == num - 1) { //如果是最后一张图片了就让数值变为1，让所有图片显示
+						loading = num;
+						console.dir(loading / num * 100 + '%');
+						document.getElementsByTagName('div')[0].style.display = "block";
+					}
+					loading++;
+				}
+			</script>
 			<span></span>
 		</div>
 
