@@ -18,8 +18,19 @@
 		<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 		<style>
 			progress {
-  					width: 100%; /* 进度条宽度 */
-				}
+    				-webkit-appearance: none;
+    				width: 0.6rem;
+   			 	height: 0.16rem;
+			}
+
+			progress::-webkit-progress-bar{
+    				background-color: #e7f1fb;
+			}
+
+			progress::-webkit-progress-value{
+    				background-color: #f57c6b;
+			}
+			
 			@media screen and (max-width: 960px) {
 				body {
 					margin-top: 5%;
@@ -62,20 +73,6 @@
 				var img = document.getElementById('preloadedImage');
 				var progress = document.getElementById('imageProgress');
 
-				img.addEventListener('load', function() {
-					// 图片加载完成后，设置progress的value为100，表示加载完成
-					progress.value = 100;
-					console.log("2");
-				});
-
-				// 如果需要，可以添加错误处理，例如图片加载失败时的处理
-				img.addEventListener('error', function() {
-					console.error('Image failed to load');
-					// 可以在这里设置progress的value为0或其他值，表示加载失败
-					progress.value = 0;
-					console.log("3");
-				});
-
 				// 如果需要实时更新进度，可以使用以下方式
 				// 但请注意，这需要服务器支持并返回正确的Content-Length头信息
 				var xhr = new XMLHttpRequest();
@@ -85,14 +82,14 @@
 					if (e.lengthComputable) {
 						var percentComplete = (e.loaded / e.total) * 100;
 						progress.value = Math.floor(percentComplete);
-						console.log("4");
+						console.log("2");
 					}
 				};
 				xhr.onload = function() {
 					if (this.status === 200) {
 						// 可以在这里更新图片的src属性，以显示加载的图片
 						img.src = URL.createObjectURL(this.response);
-						console.log("5");
+						console.log("3");
 					}
 				};
 				xhr.send();
