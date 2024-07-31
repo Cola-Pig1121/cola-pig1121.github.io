@@ -6,23 +6,25 @@
 		<title>信奥图床</title>
 		<link rel="icon" href="./favicon.ico">
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="viewport"
+			content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 		<!-- 引入bootstrap相关资源 -->
 		<link href="https://fastly.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous" />
 		<script src="https://fastly.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    			crossorigin="anonymous"></script>
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+		</script>
 		<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 		<style>
-
 			@media screen and (max-width: 960px) {
 				body {
 					margin-top: 5%;
 					margin-left: 8%;
 					margin-right: 5%;
 				}
-				.oipm-img img{
+
+				.oipm-img img {
 					margin-left: 3%;
 					margin-bottom: 2%;
 				}
@@ -34,7 +36,8 @@
 					margin-left: 30%;
 					margin-right: 30%;
 				}
-				.oipm-img img{
+
+				.oipm-img img {
 					margin-left: 6.5%;
 					margin-bottom: 3%;
 				}
@@ -44,26 +47,63 @@
 				background-color: #3ccbed82;
 			}
 
-			a{
+			a {
 				color: #1b1f23;
 				text-decoration: none;
 				font-weight: bold;
 			}
-
 		</style>
+		<script type="text/javascript">
+			document.addEventListener('DOMContentLoaded', function() {
+				var img = document.getElementById('preloadedImage');
+				var progress = document.getElementById('imageProgress');
+
+				img.addEventListener('load', function() {
+					// 图片加载完成后，设置progress的value为100，表示加载完成
+					progress.value = 100;
+				});
+
+				// 如果需要，可以添加错误处理，例如图片加载失败时的处理
+				img.addEventListener('error', function() {
+					console.error('Image failed to load');
+					// 可以在这里设置progress的value为0或其他值，表示加载失败
+					progress.value = 0;
+				});
+
+				// 如果需要实时更新进度，可以使用以下方式
+				// 但请注意，这需要服务器支持并返回正确的Content-Length头信息
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', img.src, true);
+				xhr.responseType = 'blob';
+				xhr.onprogress = function(e) {
+					if (e.lengthComputable) {
+						var percentComplete = (e.loaded / e.total) * 100;
+						progress.value = Math.floor(percentComplete);
+					}
+				};
+				xhr.onload = function() {
+					if (this.status === 200) {
+						// 可以在这里更新图片的src属性，以显示加载的图片
+						img.src = URL.createObjectURL(this.response);
+					}
+				};
+				xhr.send();
+			});
+		</script>
 	</head>
 	<body>
-		
+
 		<!-- 顶部导航栏 0 -->
-		<nav id="navbar" class="navbar navbar-light bg-light px-3" style="border-radius: 20px; background: linear-gradient(145deg, #41888a, #4da2a4); box-shadow:  7px 7px 16px #2f6263, -7px -7px 16px #61cccf; " >
+		<nav id="navbar" class="navbar navbar-light bg-light px-3"
+			style="border-radius: 20px; background: linear-gradient(145deg, #41888a, #4da2a4); box-shadow:  7px 7px 16px #2f6263, -7px -7px 16px #61cccf; ">
 			<a class="navbar-brand" href="./index.html"><img src="./favicon.png"
 					style="width: 50px; height: 50px; vertical-align: middle; border-radius: 25px; "> 信奥人的图床 —— 信奥图床</a>
 			<ul class="nav nav-pills">
 				<li class="nav-item">
-					<a class="nav-link" href="./index.html" style="color: #1b1f23;" >首页</a>
+					<a class="nav-link" href="./index.html" style="color: #1b1f23;">首页</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="./img.html" style="color: #1b1f23;" >图片</a>
+					<a class="nav-link" href="./img.html" style="color: #1b1f23;">图片</a>
 				</li>
 			</ul>
 		</nav>
@@ -73,9 +113,9 @@
 		<div class="oipm-img">
 			<span></span>
 		</div>
-    
+
 		<br>
-    
+
 		<br>
 
 		<script src="https://utteranc.es/client.js" repo="Cola-Pig1121/cola-pig1121.github.io" issue-term="title"
