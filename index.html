@@ -17,13 +17,18 @@
 		</script>
 		<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 		<script type="text/javascript">
+			function sleep (time) {
+ 				return new Promise((resolve) => setTimeout(resolve, time));
+			}
 			document.onreadystatechange = function() {
 				if (document.readyState == "loading") {
 					document.getElementById("content").style.display = "none";
 					document.getElementById("loading-page").style.display = "block";
 				} else {
-					document.getElementById("loading-page").style.display = "none";
-					document.getElementById("content").style.display = "block";
+					sleep(500).then(() => {
+						document.getElementById("loading-page").style.display = "none";
+						document.getElementById("content").style.display = "block";
+					});
 				};
 			};
 		</script>
