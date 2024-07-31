@@ -74,30 +74,31 @@
 		<br>
 
 		<div class="oipm-img">
-			<script type="text/javascript">
-				var imgs = document.getElementsByTagName('img');
-				let num = imgs.length;
-				loading = 0;
-				for (let i = 0; i < num; i++) {
-					let imgs = new Image(); //这是重点，必须new一张，如果直接用onload，在你还没执行到这段函数的时候，可能已经加载了一两个图片了，这时候就会出现加载不到100%！！！
-					imgs.src = allImgs[i].src;
-					imgs.onload = function() {
-						add()
-					}; //必须用匿名函数，否则加载的函数不是load函数
-				}
-
-				function add() {
-					console.dir(loading / num * 100 + '%');
-					if (loading == num - 1) { //如果是最后一张图片了就让数值变为1，让所有图片显示
-						loading = num;
-						console.dir(loading / num * 100 + '%');
-						document.getElementsByTagName('div')[0].style.display = "block";
-					}
-					loading++;
-				}
-			</script>
 			<span></span>
 		</div>
+
+		<script type="text/javascript">
+			var imgs = document.getElementsByTagName('img');
+			let num = imgs.length;
+			loading = 0;
+			for (let i = 0; i < num; i++) {
+				let imgs = new Image(); //这是重点，必须new一张，如果直接用onload，在你还没执行到这段函数的时候，可能已经加载了一两个图片了，这时候就会出现加载不到100%！！！
+				imgs.src = allImgs[i].src;
+				imgs.onload = function() {
+					add()
+				}; //必须用匿名函数，否则加载的函数不是load函数
+			}
+
+			function add() {
+				console.dir(loading / num * 100 + '%');
+				if (loading == num - 1) { //如果是最后一张图片了就让数值变为1，让所有图片显示
+					loading = num;
+					console.dir(loading / num * 100 + '%');
+					document.getElementsByTagName('div')[0].style.display = "block";
+				}
+				loading++;
+			}
+		</script>
 
 		<br>
 
