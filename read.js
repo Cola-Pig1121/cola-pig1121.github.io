@@ -51,7 +51,7 @@ const injectToHtml = (ar) => {
 	data.splice(
 		data.findIndex((c) => c.trim() === "<span></span>"),
 		null,
-		` <a href=".`,ar,`"><img src=".`,ar,`" style="width: 150px; height: 150px; object-fit: cover; object-position: top;" > </a> `
+		` <a href=".`,ar,`"><img id="preloadedImage" src=".`,ar,`" style="width: 150px; height: 150px; object-fit: cover; object-position: top;" > </a> `
 	);
 	fs.writeFileSync(html, data.join(EOL));
 };
