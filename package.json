@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "node read.js",
-    "start": "npx serve ."
+    "start": "node read.js && npx serve ."
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^6.0.0"
