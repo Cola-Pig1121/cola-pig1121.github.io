@@ -132,7 +132,7 @@ export default function Layout({ children }: LayoutProps) {
       <footer className="bg-white border-t mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="text-center text-gray-600">
-            <p>Made by <a href="https://bugs8.v6.army" className="text-blue-600 hover:text-blue-800">Cola Pig</a> & 落叶听枫TC</p>
+            <p>Made by Cola Pig & 落叶听枫TC</p>
           </div>
         </div>
       </footer>
