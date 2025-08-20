@@ -1,12 +1,13 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { TagInput } from '@/components/ui/tag-input'
 import { Upload, File, X, CheckCircle, AlertCircle, Image, Video } from 'lucide-react'
-import { uploadFileToGitHub } from '@/services/github'
+import { uploadFileToGitHub, getAllTags } from '@/services/github'
 
 interface UploadFile {
   file: File
@@ -15,11 +16,26 @@ interface UploadFile {
   status: 'pending' | 'uploading' | 'success' | 'error'
   url?: string
   error?: string
+  tags: string[]
 }
 
 export default function UploadPage() {
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
+  const [existingTags, setExistingTags] = useState<string[]>([])
+
+  // 加载现有标签
+  useEffect(() => {
+    const loadExistingTags = async () => {
+      try {
+        const tags = await getAllTags()
+        setExistingTags(tags)
+      } catch (error) {
+        console.error('加载现有标签失败:', error)
+      }
+    }
+    loadExistingTags()
+  }, [])
 
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
     // 处理被拒绝的文件
@@ -36,7 +52,6 @@ export default function UploadPage() {
     // 额外检查视频文件大小
     const validFiles = acceptedFiles.filter(file => {
       const isVideo = file.type.startsWith('video/')
-      const isImage = file.type.startsWith('image/')
       const maxSize = isVideo ? 20 * 1024 * 1024 : 20 * 1024 * 1024 // 视频20MB，图片20MB
       
       if (file.size > maxSize) {
@@ -50,7 +65,8 @@ export default function UploadPage() {
       file,
       id: Math.random().toString(36).substr(2, 9),
       progress: 0,
-      status: 'pending'
+      status: 'pending',
+      tags: []
     }))
     
     setUploadFiles(prev => [...prev, ...newFiles])
@@ -66,7 +82,6 @@ export default function UploadPage() {
     maxSize: 20 * 1024 * 1024, // 20MB 最大限制
     validator: (file) => {
       const isVideo = file.type.startsWith('video/')
-      const isImage = file.type.startsWith('image/')
       const maxSize = isVideo ? 20 * 1024 * 1024 : 20 * 1024 * 1024 // 视频20MB，图片20MB
       
       if (file.size > maxSize) {
@@ -85,7 +100,7 @@ export default function UploadPage() {
 
 
   const uploadToGitHub = async (uploadFile: UploadFile): Promise<void> => {
-    const { file } = uploadFile
+    const { file, tags } = uploadFile
     const isImage = file.type.startsWith('image/')
     const type = isImage ? 'image' : 'video'
     
@@ -102,8 +117,8 @@ export default function UploadPage() {
       // 开始上传
       updateProgress(10)
       
-      // 调用GitHub API上传文件（返回CDN URL）
-      const cdnUrl = await uploadFileToGitHub(file, type)
+      // 调用GitHub API上传文件（返回CDN URL），传入标签
+      const cdnUrl = await uploadFileToGitHub(file, type, tags)
       
       // 上传完成
       updateProgress(100)
@@ -135,8 +150,15 @@ export default function UploadPage() {
     setIsUploading(true)
     const pendingFiles = uploadFiles.filter(f => f.status === 'pending')
     
-    // 并发上传所有文件
-    await Promise.all(pendingFiles.map(uploadToGitHub))
+    // 按顺序逐个上传文件，间隔0.2秒
+    for (let i = 0; i < pendingFiles.length; i++) {
+      await uploadToGitHub(pendingFiles[i])
+      
+      // 如果不是最后一个文件，等待0.2秒
+      if (i < pendingFiles.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 200))
+      }
+    }
     
     setIsUploading(false)
   }
@@ -278,6 +300,24 @@ export default function UploadPage() {
                   </div>
                 </div>
 
+                {/* 标签输入区域 */}
+                {uploadFile.status === 'pending' && (
+                  <div className="mb-3">
+                    <TagInput
+                      tags={uploadFile.tags}
+                      onTagsChange={(newTags) => {
+                        setUploadFiles(prev => prev.map(f => 
+                          f.id === uploadFile.id 
+                            ? { ...f, tags: newTags }
+                            : f
+                        ))
+                      }}
+                      existingTags={existingTags}
+                      placeholder="输入标签名称"
+                    />
+                  </div>
+                )}
+
                 {uploadFile.status === 'uploading' && (
                   <Progress value={uploadFile.progress} className="mb-2" />
                 )}
@@ -290,20 +330,32 @@ export default function UploadPage() {
                 )}
 
                 {uploadFile.status === 'success' && uploadFile.url && (
-                  <Alert>
-                    <CheckCircle className="h-4 w-4" />
-                    <AlertDescription>
-                      上传成功！文件已保存到: 
-                      <a 
-                        href={uploadFile.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline ml-1"
-                      >
-                        查看文件
-                      </a>
-                    </AlertDescription>
-                  </Alert>
+                  <div className="space-y-2">
+                    {uploadFile.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        <span className="text-sm text-gray-600">标签:</span>
+                        {uploadFile.tags.map((tag, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                    <Alert>
+                      <CheckCircle className="h-4 w-4" />
+                      <AlertDescription>
+                        上传成功！文件已保存到: 
+                        <a 
+                          href={uploadFile.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline ml-1"
+                        >
+                          查看文件
+                        </a>
+                      </AlertDescription>
+                    </Alert>
+                  </div>
                 )}
               </div>
             ))}
@@ -320,7 +372,6 @@ export default function UploadPage() {
           <p>• 支持拖拽上传和点击选择文件两种方式</p>
           <p>• 图片文件将保存到 GitHub 仓库的 images 文件夹（最大20MB）</p>
           <p>• 视频文件将保存到 GitHub 仓库的 videos 文件夹（最大20MB）</p>
-          <p>• 文件将自动按当前时间命名，格式为：YYYY-MM-DD-HH-MM-SS-随机字符.扩展名</p>
           <p>• 上传完成后通过 CDN 加速访问</p>
           <p>• 上传完成后可在对应的图片或视频页面查看</p>
         </CardContent>
