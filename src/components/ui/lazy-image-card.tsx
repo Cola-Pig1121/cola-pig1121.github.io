@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -26,7 +25,6 @@ interface LazyImageCardProps {
 
 export function LazyImageCard({ image, onPreview, viewMode }: LazyImageCardProps) {
   const { elementRef, isVisible } = useLazyLoad({ rootMargin: '100px' })
-  const [imageLoaded, setImageLoaded] = useState(false)
 
   const formatDate = (dateString: string) => {
     try {
@@ -60,13 +58,7 @@ export function LazyImageCard({ image, onPreview, viewMode }: LazyImageCardProps
                   alt={image.displayName}
                   className="rounded-t-lg group-hover:scale-105 transition-transform duration-200"
                   aspectRatio="square"
-                  onLoad={() => setImageLoaded(true)}
                 />
-                {!imageLoaded && (
-                  <div className="absolute inset-0 bg-gray-200 rounded-t-lg animate-pulse flex items-center justify-center">
-                    <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
-                  </div>
-                )}
               </div>
               {/* 预览按钮 */}
               <Button
@@ -135,13 +127,7 @@ export function LazyImageCard({ image, onPreview, viewMode }: LazyImageCardProps
                   alt={image.displayName}
                   className="w-16 h-16 rounded-lg flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
                   aspectRatio="aspect-square"
-                  onLoad={() => setImageLoaded(true)}
                 />
-                {!imageLoaded && (
-                  <div className="absolute inset-0 bg-gray-200 rounded-lg animate-pulse flex items-center justify-center">
-                    <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
-                  </div>
-                )}
                 {/* 预览按钮 */}
                 <Button
                   variant="secondary"
