@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { TagInput } from '@/components/ui/tag-input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogDescription, VisuallyHidden } from '@/components/ui/dialog'
 import { Upload, File, X, CheckCircle, AlertCircle, Image, Video, CheckSquare, Square, Tag } from 'lucide-react'
 import { uploadFileToGitHub, getAllTags } from '@/services/github'
 
@@ -349,6 +349,10 @@ export default function UploadPage() {
       {/* 添加标签对话框 */}
       <Dialog open={isTagDialogOpen} onOpenChange={setIsTagDialogOpen}>
         <DialogContent>
+          <VisuallyHidden>
+            <DialogTitle>添加标签</DialogTitle>
+            <DialogDescription>为选中的文件添加标签</DialogDescription>
+          </VisuallyHidden>
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium">为选中的文件添加标签</h3>

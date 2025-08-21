@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogDescription, VisuallyHidden } from '@/components/ui/dialog'
 import { LazyImageCard } from '@/components/ui/lazy-image-card'
 import { TagInput } from '@/components/ui/tag-input'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -320,6 +320,10 @@ export default function ImagesPage() {
       {/* 添加标签对话框 */}
       <Dialog open={isTagDialogOpen} onOpenChange={setIsTagDialogOpen}>
         <DialogContent>
+          <VisuallyHidden>
+            <DialogTitle>添加标签</DialogTitle>
+            <DialogDescription>为选中的图片添加标签</DialogDescription>
+          </VisuallyHidden>
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium">为选中的图片添加标签</h3>
@@ -393,6 +397,10 @@ export default function ImagesPage() {
         }
       }}>
         <DialogContent className="w-[90vw] h-[90vh] max-w-[1200px] max-h-[800px] p-0">
+          <VisuallyHidden>
+            <DialogTitle>图片预览</DialogTitle>
+            <DialogDescription>查看图片详情</DialogDescription>
+          </VisuallyHidden>
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-center p-4 bg-black relative" style={{ height: window.innerWidth <= 768 ? '612px' : '680px' }}>
               <img
