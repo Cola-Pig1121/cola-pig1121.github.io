@@ -259,6 +259,100 @@ export const getAllTags = async (): Promise<string[]> => {
   }
 }
 
+// 为文件添加标签（通过重命名文件）
+export const addTagsToFiles = async (
+  filePaths: string[],
+  newTags: string[],
+  type: 'image' | 'video'
+): Promise<void> => {
+  const token = getGitHubToken()
+  
+  for (const filePath of filePaths) {
+    try {
+      // 获取当前文件信息
+      const response = await axios.get(
+        `${GITHUB_API_BASE}/repos/${REPO}/contents/${filePath}`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
+      )
+
+      const fileData = response.data
+      const currentFileName = fileData.name
+      const currentTags = extractTagsFromFileName(currentFileName)
+      
+      // 合并现有标签和新标签，去重
+      const allTags = [...new Set([...currentTags, ...newTags])]
+      
+      // 生成新的文件名
+      const nameWithoutExt = currentFileName.replace(/\.[^/.]+$/, '')
+      const extension = currentFileName.split('.').pop()
+      
+      // 提取原始文件名部分（去掉时间戳和标签）
+      const originalNameMatch = nameWithoutExt.match(/^(.+?)_\d{2}-\d{2}-\d{2}-[a-z0-9]+/)
+      const originalName = originalNameMatch ? originalNameMatch[1] : nameWithoutExt
+      
+      // 提取时间戳部分
+      const timestampMatch = nameWithoutExt.match(/_(\d{2}-\d{2}-\d{2}-[a-z0-9]+)/)
+      const timestamp = timestampMatch ? timestampMatch[1] : 'unknown'
+      
+      // 构建新文件名
+      const tagString = allTags.length > 0 ? `_${allTags.join('_')}` : ''
+      const newFileName = `${originalName}_${timestamp}${tagString}.${extension}`
+      
+      // 如果文件名没有变化，跳过
+      if (newFileName === currentFileName) {
+        continue
+      }
+      
+      // 构建新的文件路径
+      const pathParts = filePath.split('/')
+      pathParts[pathParts.length - 1] = newFileName
+      const newFilePath = pathParts.join('/')
+      
+      // 创建新文件
+      await axios.put(
+        `${GITHUB_API_BASE}/repos/${REPO}/contents/${newFilePath}`,
+        {
+          branch: 'main',
+          message: `Add tags to ${type}: ${newTags.join(', ')}`,
+          content: fileData.content,
+          path: newFilePath
+        },
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
+      )
+      
+      // 删除旧文件
+      await axios.delete(
+        `${GITHUB_API_BASE}/repos/${REPO}/contents/${filePath}`,
+        {
+          data: {
+            branch: 'main',
+            message: `Remove old file after adding tags: ${currentFileName}`,
+            sha: fileData.sha
+          },
+          headers: {
+            Authorization: `token ${token}`,
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
+      )
+      
+    } catch (error) {
+      console.error(`Failed to add tags to file ${filePath}:`, error)
+      throw new Error(`为文件 ${filePath} 添加标签失败`)
+    }
+  }
+}
+
 // 检查GitHub连接状态
 export const checkGitHubConnection = async (): Promise<boolean> => {
   try {

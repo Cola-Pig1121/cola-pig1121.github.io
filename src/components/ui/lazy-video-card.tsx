@@ -25,9 +25,12 @@ interface LazyVideoCardProps {
   viewMode: 'grid' | 'list'
   onPlay?: (videoUrl: string) => void
   isPlaying?: boolean
+  onClick?: () => void
+  className?: string
+  style?: React.CSSProperties
 }
 
-export function LazyVideoCard({ video, onPreview, viewMode, onPlay, isPlaying }: LazyVideoCardProps) {
+export function LazyVideoCard({ video, onPreview, viewMode, onPlay, isPlaying, onClick, className, style }: LazyVideoCardProps) {
   const { elementRef, isVisible } = useLazyLoad({ rootMargin: '100px' })
   const [videoLoaded, setVideoLoaded] = useState(false)
 
@@ -55,7 +58,11 @@ export function LazyVideoCard({ video, onPreview, viewMode, onPlay, isPlaying }:
             </CardContent>
           </Card>
         ) : (
-          <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
+          <Card 
+            className={`group cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1 ${className || ''}`}
+            style={style}
+            onClick={onClick}
+          >
             <CardHeader className="p-0 relative">
               <div className="relative">
                 <LazyVideo
@@ -132,7 +139,11 @@ export function LazyVideoCard({ video, onPreview, viewMode, onPlay, isPlaying }:
           </CardContent>
         </Card>
       ) : (
-        <Card className="group cursor-pointer hover:shadow-md transition-all duration-200">
+        <Card 
+          className={`group cursor-pointer hover:shadow-md transition-all duration-200 ${className || ''}`}
+          style={style}
+          onClick={onClick}
+        >
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
               <div className="relative">

@@ -6,10 +6,12 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { LazyVideoCard } from '@/components/ui/lazy-video-card'
-import { RefreshCw, Video as VideoIcon, Search, Grid, List, ChevronLeft, ChevronRight, Download, Calendar } from 'lucide-react'
+import { TagInput } from '@/components/ui/tag-input'
+import { Checkbox } from '@/components/ui/checkbox'
+import { RefreshCw, Video as VideoIcon, Search, Grid, List, ChevronLeft, ChevronRight, Download, Calendar, CheckSquare, Square, Tag, Archive } from 'lucide-react'
 import { format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
-import { getVideos } from '@/services/github'
+import { getVideos, getAllTags, addTagsToFiles } from '@/services/github'
 import { generateThumbnailFromUrl } from '@/utils/video-thumbnail'
 import { Link } from 'react-router-dom'
 
@@ -46,6 +48,13 @@ export default function VideosPage() {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(-1)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [playingVideo, setPlayingVideo] = useState<string | null>(null)
+  
+  // 多选功能状态
+  const [isMultiSelectMode, setIsMultiSelectMode] = useState(false)
+  const [selectedVideos, setSelectedVideos] = useState<Set<string>>(new Set())
+  const [isTagDialogOpen, setIsTagDialogOpen] = useState(false)
+  const [newTags, setNewTags] = useState<string[]>([])
+  const [isAddingTags, setIsAddingTags] = useState(false)
 
   // 键盘导航
   useEffect(() => {
@@ -56,10 +65,12 @@ export default function VideosPage() {
         event.preventDefault()
         const newIndex = selectedVideoIndex > 0 ? selectedVideoIndex - 1 : filteredVideos.length - 1
         setSelectedVideoIndex(newIndex)
+        setPlayingVideo(null) // 停止当前视频播放
       } else if (event.key === 'ArrowRight') {
         event.preventDefault()
         const newIndex = selectedVideoIndex < filteredVideos.length - 1 ? selectedVideoIndex + 1 : 0
         setSelectedVideoIndex(newIndex)
+        setPlayingVideo(null) // 停止当前视频播放
       } else if (event.key === 'Escape') {
         setIsDialogOpen(false)
         setSelectedVideoIndex(-1)
@@ -77,6 +88,96 @@ export default function VideosPage() {
 
   const handlePlayVideo = (videoUrl: string) => {
     setPlayingVideo(playingVideo === videoUrl ? null : videoUrl)
+  }
+
+  // 多选功能函数
+  const toggleMultiSelectMode = () => {
+    setIsMultiSelectMode(!isMultiSelectMode)
+    setSelectedVideos(new Set())
+  }
+
+  const toggleVideoSelection = (videoPath: string) => {
+    const newSelected = new Set(selectedVideos)
+    if (newSelected.has(videoPath)) {
+      newSelected.delete(videoPath)
+    } else {
+      newSelected.add(videoPath)
+    }
+    setSelectedVideos(newSelected)
+  }
+
+  const selectAllVideos = () => {
+    const allVideoPaths = new Set(filteredVideos.map(video => video.path))
+    setSelectedVideos(allVideoPaths)
+  }
+
+  const clearSelection = () => {
+    setSelectedVideos(new Set())
+  }
+
+  const downloadSelectedVideos = async () => {
+    const selectedVideosList = filteredVideos.filter(video => selectedVideos.has(video.path))
+    
+    for (const video of selectedVideosList) {
+      try {
+        // 转换下载链接为更快的 CDN
+        const downloadUrl = video.url.replace('raw.githubusercontent.com', 'raw.staticdn.net')
+        const response = await fetch(downloadUrl)
+        const blob = await response.blob()
+        
+        // 创建 blob URL
+        const blobUrl = window.URL.createObjectURL(blob)
+        
+        // 创建下载链接
+        const link = document.createElement('a')
+        link.href = blobUrl
+        link.download = video.name
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        
+        // 清理 blob URL
+        window.URL.revokeObjectURL(blobUrl)
+        
+        // 添加延迟避免浏览器阻止多个下载
+        await new Promise(resolve => setTimeout(resolve, 200))
+      } catch (error) {
+        console.error(`下载视频 ${video.name} 失败:`, error)
+        // 如果 fetch 失败，回退到直接链接方式
+        window.open(video.url, '_blank')
+      }
+    }
+    
+    setSelectedVideos(new Set())
+    setIsMultiSelectMode(false)
+  }
+
+  const openTagDialog = () => {
+    setNewTags([])
+    setIsTagDialogOpen(true)
+  }
+
+  const addTagsToSelectedVideos = async () => {
+    if (newTags.length === 0 || selectedVideos.size === 0) return
+
+    setIsAddingTags(true)
+    try {
+      const selectedVideosList = filteredVideos.filter(video => selectedVideos.has(video.path))
+      await addTagsToFiles(selectedVideosList.map(video => video.path), newTags, 'video')
+      
+      // 重新获取数据
+      await fetchVideos()
+      
+      // 清空选择和关闭对话框
+      setSelectedVideos(new Set())
+      setIsTagDialogOpen(false)
+      setNewTags([])
+      setIsMultiSelectMode(false)
+    } catch (error) {
+      console.error('添加标签失败:', error)
+    } finally {
+      setIsAddingTags(false)
+    }
   }
 
   // 生成视频缩略图
@@ -106,12 +207,9 @@ export default function VideosPage() {
     try {
       const videoFiles = await getVideos()
 
-      // 提取所有标签
-      const tags = new Set<string>()
-      videoFiles.forEach(video => {
-        video.tags.forEach(tag => tags.add(tag))
-      })
-      setAllTags(Array.from(tags).sort())
+      // 获取所有现有标签
+      const tags = await getAllTags()
+      setAllTags(tags)
 
       // 先设置初始状态
       const videosWithInitialState = videoFiles.map(video => ({
@@ -221,14 +319,89 @@ export default function VideosPage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">视频管理</h1>
             <p className="text-sm sm:text-base text-gray-600">
               共 {videos.length} 个视频 {filteredVideos.length !== videos.length && `(显示 ${filteredVideos.length} 个)`}
+              {isMultiSelectMode && selectedVideos.size > 0 && ` (已选择 ${selectedVideos.size} 个)`}
             </p>
           </div>
         </div>
-        <Button onClick={fetchVideos} variant="outline" className="self-start sm:self-auto">
-          <RefreshCw className="w-4 h-4 mr-2" />
-          刷新
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={toggleMultiSelectMode} 
+            variant={isMultiSelectMode ? "default" : "outline"}
+            className="self-start sm:self-auto"
+          >
+            {isMultiSelectMode ? <CheckSquare className="w-4 h-4 mr-2" /> : <Square className="w-4 h-4 mr-2" />}
+            {isMultiSelectMode ? '退出多选' : '多选模式'}
+          </Button>
+          <Button onClick={fetchVideos} variant="outline" className="self-start sm:self-auto">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            刷新
+          </Button>
+        </div>
       </div>
+
+      {/* 多选操作栏 */}
+      {isMultiSelectMode && (
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={selectAllVideos} variant="outline" size="sm">
+                  全选 ({filteredVideos.length})
+                </Button>
+                <Button onClick={clearSelection} variant="outline" size="sm" disabled={selectedVideos.size === 0}>
+                  清空选择
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  onClick={openTagDialog} 
+                  variant="outline" 
+                  size="sm" 
+                  disabled={selectedVideos.size === 0}
+                >
+                  <Tag className="w-4 h-4 mr-1" />
+                  添加标签 ({selectedVideos.size})
+                </Button>
+                <Button 
+                  onClick={downloadSelectedVideos} 
+                  variant="outline" 
+                  size="sm" 
+                  disabled={selectedVideos.size === 0}
+                >
+                  <Archive className="w-4 h-4 mr-1" />
+                  批量下载 ({selectedVideos.size})
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 添加标签对话框 */}
+      <Dialog open={isTagDialogOpen} onOpenChange={setIsTagDialogOpen}>
+        <DialogContent>
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-medium">为选中的视频添加标签</h3>
+              <p className="text-sm text-gray-500">已选择 {selectedVideos.size} 个视频</p>
+            </div>
+            <TagInput
+              tags={newTags}
+              onTagsChange={setNewTags}
+              existingTags={allTags}
+              placeholder="输入要添加的标签"
+            />
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setIsTagDialogOpen(false)}>
+                取消
+              </Button>
+              <Button onClick={addTagsToSelectedVideos} disabled={isAddingTags || newTags.length === 0}>
+                {isAddingTags ? '添加中...' : '添加标签'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* 搜索和过滤栏 */}
       <div className="flex flex-col sm:flex-row gap-4">
@@ -277,17 +450,18 @@ export default function VideosPage() {
         if (!open) {
           setIsDialogOpen(false)
           setSelectedVideoIndex(-1)
+          setPlayingVideo(null)
         }
       }}>
-        <DialogContent className="max-w-[90vw] max-h-[90vh] p-0">
+        <DialogContent className="w-[90vw] h-[90vh] max-w-[1200px] max-h-[800px] p-0">
           <div className="flex flex-col h-full">
-            <div className="flex-1 flex items-center justify-center p-4 min-h-0 bg-black relative">
+            <div className="flex items-center justify-center p-4 bg-black relative" style={{ height: window.innerWidth <= 768 ? '612px' : '680px' }}>
               <video
+                key={selectedVideoIndex}
+                src={filteredVideos[selectedVideoIndex]?.url}
                 controls
-                className="max-w-full max-h-full"
-                style={{ maxHeight: 'calc(90vh - 120px)' }}
+                className="max-w-full max-h-full object-contain"
               >
-                <source src={filteredVideos[selectedVideoIndex]?.url} type="video/mp4" />
                 您的浏览器不支持视频播放。
               </video>
               
@@ -301,6 +475,7 @@ export default function VideosPage() {
                     onClick={() => {
                       const newIndex = selectedVideoIndex > 0 ? selectedVideoIndex - 1 : filteredVideos.length - 1
                       setSelectedVideoIndex(newIndex)
+                      setPlayingVideo(null) // 停止当前视频播放
                     }}
                   >
                     <ChevronLeft className="w-4 h-4" />
@@ -312,6 +487,7 @@ export default function VideosPage() {
                     onClick={() => {
                       const newIndex = selectedVideoIndex < filteredVideos.length - 1 ? selectedVideoIndex + 1 : 0
                       setSelectedVideoIndex(newIndex)
+                      setPlayingVideo(null) // 停止当前视频播放
                     }}
                   >
                     <ChevronRight className="w-4 h-4" />
@@ -323,11 +499,36 @@ export default function VideosPage() {
             <div className="p-4 border-t bg-gray-50 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="font-medium">{filteredVideos[selectedVideoIndex]?.displayName}</h3>
-                <Button variant="outline" size="sm" asChild>
-                  <a href={filteredVideos[selectedVideoIndex]?.url} download={filteredVideos[selectedVideoIndex]?.name}>
-                    <Download className="w-4 h-4 mr-1" />
-                    下载
-                  </a>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={async () => {
+                    const currentVideo = filteredVideos[selectedVideoIndex]
+                    if (!currentVideo) return
+                    
+                    try {
+                      // 转换下载链接为更快的 CDN
+                      const downloadUrl = currentVideo.url.replace('raw.githubusercontent.com', 'raw.staticdn.net')
+                      const response = await fetch(downloadUrl)
+                      const blob = await response.blob()
+                      const blobUrl = window.URL.createObjectURL(blob)
+                      
+                      const link = document.createElement('a')
+                      link.href = blobUrl
+                      link.download = currentVideo.name
+                      document.body.appendChild(link)
+                      link.click()
+                      document.body.removeChild(link)
+                      
+                      window.URL.revokeObjectURL(blobUrl)
+                    } catch (error) {
+                      console.error('下载失败:', error)
+                      window.open(currentVideo.url, '_blank')
+                    }
+                  }}
+                >
+                  <Download className="w-4 h-4 mr-1" />
+                  下载
                 </Button>
               </div>
               <p className="text-sm text-gray-500 text-center">{formatDate(filteredVideos[selectedVideoIndex]?.date || '')}</p>
@@ -387,15 +588,29 @@ export default function VideosPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {dateVideos.map((video, index) => {
                       const globalIndex = filteredVideos.findIndex(vid => vid.url === video.url)
+                      const isSelected = selectedVideos.has(video.path)
                       return (
-                        <LazyVideoCard
-                          key={`${date}-${index}`}
-                          video={video}
-                          viewMode="grid"
-                          onPreview={() => openVideoDialog(globalIndex)}
-                          onPlay={handlePlayVideo}
-                          isPlaying={playingVideo === video.url}
-                        />
+                        <div key={`${date}-${index}`} className="relative">
+                          {isMultiSelectMode && (
+                            <div className="absolute top-2 left-2 z-10">
+                              <Checkbox
+                                checked={isSelected}
+                                onCheckedChange={() => toggleVideoSelection(video.path)}
+                                className="bg-white border-2 border-gray-300 shadow-sm"
+                              />
+                            </div>
+                          )}
+                          <LazyVideoCard
+                            video={video}
+                            viewMode="grid"
+                            onPreview={() => !isMultiSelectMode && openVideoDialog(globalIndex)}
+                            onPlay={handlePlayVideo}
+                            isPlaying={playingVideo === video.url}
+                            onClick={() => isMultiSelectMode && toggleVideoSelection(video.path)}
+                            className={isMultiSelectMode ? 'cursor-pointer' : ''}
+                            style={isSelected ? { outline: '2px solid #3b82f6' } : {}}
+                          />
+                        </div>
                       )
                     })}
                   </div>
@@ -403,15 +618,29 @@ export default function VideosPage() {
                   <div className="space-y-3">
                     {dateVideos.map((video, index) => {
                       const globalIndex = filteredVideos.findIndex(vid => vid.url === video.url)
+                      const isSelected = selectedVideos.has(video.path)
                       return (
-                        <LazyVideoCard
-                          key={`${date}-${index}`}
-                          video={video}
-                          viewMode="list"
-                          onPreview={() => openVideoDialog(globalIndex)}
-                          onPlay={handlePlayVideo}
-                          isPlaying={playingVideo === video.url}
-                        />
+                        <div key={`${date}-${index}`} className="relative">
+                          {isMultiSelectMode && (
+                            <div className="absolute top-2 left-2 z-10">
+                              <Checkbox
+                                checked={isSelected}
+                                onCheckedChange={() => toggleVideoSelection(video.path)}
+                                className="bg-white border-2 border-gray-300 shadow-sm"
+                              />
+                            </div>
+                          )}
+                          <LazyVideoCard
+                            video={video}
+                            viewMode="list"
+                            onPreview={() => !isMultiSelectMode && openVideoDialog(globalIndex)}
+                            onPlay={handlePlayVideo}
+                            isPlaying={playingVideo === video.url}
+                            onClick={() => isMultiSelectMode && toggleVideoSelection(video.path)}
+                            className={isMultiSelectMode ? 'cursor-pointer' : ''}
+                            style={isSelected ? { outline: '2px solid #3b82f6' } : {}}
+                          />
+                        </div>
                       )
                     })}
                   </div>

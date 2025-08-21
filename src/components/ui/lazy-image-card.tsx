@@ -21,9 +21,12 @@ interface LazyImageCardProps {
   image: ImageFile
   onPreview: () => void
   viewMode: 'grid' | 'list'
+  onClick?: () => void
+  className?: string
+  style?: React.CSSProperties
 }
 
-export function LazyImageCard({ image, onPreview, viewMode }: LazyImageCardProps) {
+export function LazyImageCard({ image, onPreview, viewMode, onClick, className, style }: LazyImageCardProps) {
   const { elementRef, isVisible } = useLazyLoad({ rootMargin: '100px' })
 
   const formatDate = (dateString: string) => {
@@ -50,7 +53,11 @@ export function LazyImageCard({ image, onPreview, viewMode }: LazyImageCardProps
             </CardContent>
           </Card>
         ) : (
-          <Card className="group cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
+          <Card 
+            className={`group cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1 ${className || ''}`}
+            style={style}
+            onClick={onClick}
+          >
             <CardHeader className="p-0 relative">
               <div className="relative">
                 <LazyImage
@@ -118,7 +125,11 @@ export function LazyImageCard({ image, onPreview, viewMode }: LazyImageCardProps
           </CardContent>
         </Card>
       ) : (
-        <Card className="group cursor-pointer hover:shadow-md transition-all duration-200">
+        <Card 
+          className={`group cursor-pointer hover:shadow-md transition-all duration-200 ${className || ''}`}
+          style={style}
+          onClick={onClick}
+        >
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
               <div className="relative">
