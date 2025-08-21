@@ -214,7 +214,7 @@ export const extractDateFromFilePath = (filePath: string): string => {
 // 获取下载链接（将GitHub链接转换为CDN链接）
 export const getDownloadUrl = (url: string): string => {
   // 只替换raw.githubusercontent.com为raw.staticdn.net
-  return url.replace('raw.githubusercontent.com', 'raw.staticdn.net')
+  return url.replace('raw.githubusercontent.com/colapig081121/files/refs/', 'fastly.jsdelivr.net/gh/colapig081121/files@refs//')
 }
 
 // 获取视频展示链接（保持使用fastly.jsdelivr.net）
