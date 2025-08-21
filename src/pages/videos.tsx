@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { RefreshCw, Video as VideoIcon, Search, Grid, List, ChevronLeft, ChevronRight, Download, Calendar, CheckSquare, Square, Tag, Archive } from 'lucide-react'
 import { format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
-import { getVideos, getAllTags, addTagsToFiles } from '@/services/github'
+import { getVideos, getAllTags, addTagsToFiles, getDownloadUrl } from '@/services/github'
 import { generateThumbnailFromUrl } from '@/utils/video-thumbnail'
 import { Link } from 'react-router-dom'
 
@@ -120,8 +120,8 @@ export default function VideosPage() {
     
     for (const video of selectedVideosList) {
       try {
-        // 转换下载链接为更快的 CDN
-        const downloadUrl = video.url.replace('raw.githubusercontent.com', 'raw.staticdn.net')
+        // 使用 getDownloadUrl 函数获取下载链接
+        const downloadUrl = getDownloadUrl(video.url)
         const response = await fetch(downloadUrl)
         const blob = await response.blob()
         
@@ -507,8 +507,8 @@ export default function VideosPage() {
                     if (!currentVideo) return
                     
                     try {
-                      // 转换下载链接为更快的 CDN
-                      const downloadUrl = currentVideo.url.replace('raw.githubusercontent.com', 'raw.staticdn.net')
+                      // 使用 getDownloadUrl 函数获取下载链接
+                      const downloadUrl = getDownloadUrl(currentVideo.url)
                       const response = await fetch(downloadUrl)
                       const blob = await response.blob()
                       const blobUrl = window.URL.createObjectURL(blob)

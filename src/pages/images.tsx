@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { RefreshCw, Image as ImageIcon, Search, Grid, List, ChevronLeft, ChevronRight, Download, Calendar, CheckSquare, Square, Tag, Archive } from 'lucide-react'
 import { format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
-import { getImages, getAllTags, addTagsToFiles } from '@/services/github'
+import { getImages, getAllTags, addTagsToFiles, getDownloadUrl } from '@/services/github'
 import { Link } from 'react-router-dom'
 
 interface ImageFile {
@@ -105,8 +105,8 @@ export default function ImagesPage() {
     
     for (const image of selectedImagesList) {
       try {
-        // 转换下载链接为更快的 CDN
-        const downloadUrl = image.url.replace('raw.githubusercontent.com', 'raw.staticdn.net')
+        // 使用 getDownloadUrl 函数获取下载链接
+        const downloadUrl = getDownloadUrl(image.url)
         const response = await fetch(downloadUrl)
         const blob = await response.blob()
         

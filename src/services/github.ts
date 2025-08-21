@@ -211,6 +211,21 @@ export const extractDateFromFilePath = (filePath: string): string => {
   return new Date().toISOString().split('T')[0]
 }
 
+// 获取下载链接（将GitHub链接转换为CDN链接）
+export const getDownloadUrl = (url: string): string => {
+  // 只替换raw.githubusercontent.com为raw.staticdn.net
+  return url.replace('raw.githubusercontent.com', 'raw.staticdn.net')
+}
+
+// 获取视频展示链接（保持使用fastly.jsdelivr.net）
+export const getVideoDisplayUrl = (url: string): string => {
+  // 保持使用fastly.jsdelivr.net
+  if (url.includes('githubusercontent.com')) {
+    return url.replace('raw.githubusercontent.com', 'fastly.jsdelivr.net/gh')
+  }
+  return url
+}
+
 // 获取图片文件列表
 export const getImages = async () => {
   const imageFiles = await getFilesFromFolder('images')

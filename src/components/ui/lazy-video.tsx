@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Play, VideoIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getVideoDisplayUrl } from '@/services/github'
 
 interface LazyVideoProps {
   src: string
@@ -77,7 +78,7 @@ export function LazyVideo({
           className="w-full h-full object-cover"
           onEnded={() => onPlay?.()}
         >
-          <source src={src} type="video/mp4" />
+          <source src={getVideoDisplayUrl(src)} type="video/mp4" />
           您的浏览器不支持视频播放。
         </video>
       </div>

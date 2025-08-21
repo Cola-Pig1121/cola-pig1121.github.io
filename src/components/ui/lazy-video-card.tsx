@@ -7,6 +7,7 @@ import { Play, Maximize } from 'lucide-react'
 import { format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
+import { getVideoDisplayUrl } from '@/services/github'
 
 interface VideoFile {
   name: string
@@ -66,7 +67,7 @@ export function LazyVideoCard({ video, onPreview, viewMode, onPlay, isPlaying, o
             <CardHeader className="p-0 relative">
               <div className="relative">
                 <LazyVideo
-                  src={video.url}
+                  src={getVideoDisplayUrl(video.url)}
                   thumbnail={video.thumbnail}
                   alt={video.displayName}
                   className="rounded-t-lg group-hover:scale-105 transition-transform duration-200"
@@ -148,7 +149,7 @@ export function LazyVideoCard({ video, onPreview, viewMode, onPlay, isPlaying, o
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <LazyVideo
-                  src={video.url}
+                  src={getVideoDisplayUrl(video.url)}
                   thumbnail={video.thumbnail}
                   alt={video.displayName}
                   className="w-20 h-12 rounded-lg flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
